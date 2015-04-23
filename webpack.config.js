@@ -22,7 +22,7 @@ module.exports = {
 
   plugins: [
     new webpack.ProvidePlugin({
-      files: 'exports?files.files!js/index',
+      Files: 'exports?this.files!js/index',
       $: 'bower_components/jquery/dist/jquery',
       Handlebars: 'bower_components/handlebars/handlebars',
       moment: 'bower_components/moment/moment',

@@ -7,6 +7,21 @@ var helpers = {
   },
 }
 
+function getFileList(fileObject) {
+  var files = [];
+  for (var key in fileObject) {
+    if (!fileObject.hasOwnProperty(key)) {
+      return;
+    }
+
+    fileObject[key].path = key;
+    fileObject[key].children = getFileList(fileObject[key].children);
+
+    files.push(fileObject[key]);
+  }
+  return files;
+}
+
 function registerRoutes(files, basePath) {
   files.forEach(function(file) {
     var path = basePath + '/' + file.path.replace(/.html$/g, '');
@@ -18,7 +33,7 @@ function registerRoutes(files, basePath) {
       $('#content').html(html({
         now: moment(),
         file: file,
-        files: window.files,
+        files: Files,
       }));
     });
   });
@@ -33,5 +48,5 @@ $(document).ready(function() {
   }
 
   // Register routes according to our file index
-  registerRoutes(files, '');
+  registerRoutes(getFileList(Files), '');
 });

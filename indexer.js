@@ -6,21 +6,25 @@ var path = require('path');
  * @param dir Root directory to be explored
  */
 function getFiles(dir) {
-  return fs.readdirSync(dir).map(function(file) {
+  var directory = {};
+  fs.readdirSync(dir).forEach(function(file) {
+    if (file[0] === '.') {
+      return;
+    }
+
     var fullPath = path.join(dir, file);
     var filedata = fs.statSync(fullPath);
 
-    var retval = {
-      path: file,
+    directory[file] = {
       modified: filedata.mtime,
       created: filedata.birthtime
     };
 
     if (filedata.isDirectory()) {
-      retval.children = getFiles(fullPath);
+      directory[file].children = getFiles(fullPath);
     }
-    return retval;
   });
+  return directory;
 }
 
 // Get all files on the content folder
