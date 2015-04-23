@@ -1,6 +1,10 @@
 # vim temporary files
 *.swp
 
+# dist files
+dist/
+js/index.js
+
 # dependencies
 bower_components/
 node_modules/

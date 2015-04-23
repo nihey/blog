@@ -33,7 +33,7 @@ h2 {
   margin-right: 0.3em;
 }
 
-.container > h2 {
+#content > h2 {
   text-align: center;
 }
 
