@@ -1,0 +1,21 @@
+{
+  "name": "blog",
+  "version": "0.0.0",
+  "homepage": "https://github.com/nihey/blog",
+  "authors": [
+    "Nihey Takizawa <nihey.takizawa@gmail.com>"
+  ],
+  "description": "Personal Blog",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "routie": "~0.3.2"
+  }
+}
