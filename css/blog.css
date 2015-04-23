@@ -43,3 +43,8 @@ h2 {
   margin-right: auto;
   text-align: justify;
 }
+
+.date-title {
+  text-align: center;
+  font-size: 0.8em;
+}

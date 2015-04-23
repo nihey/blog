@@ -25,6 +25,7 @@ module.exports = {
       files: 'exports?files.files!js/index',
       $: 'bower_components/jquery/dist/jquery',
       Handlebars: 'bower_components/handlebars/handlebars',
+      moment: 'bower_components/moment/moment',
       routie: 'exports?window.routie!bower_components/routie/dist/routie.min',
     }),
   ],
