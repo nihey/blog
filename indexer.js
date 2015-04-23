@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var cheerio = require('cheerio');
 
 /* Explores a directory and return all its tree
  *
@@ -22,7 +23,9 @@ function getFiles(dir) {
 
     if (filedata.isDirectory()) {
       directory[file].children = getFiles(fullPath);
+      return;
     }
+    directory[file].title = cheerio.load(fs.readFileSync(fullPath))('#title').text();
   });
   return directory;
 }

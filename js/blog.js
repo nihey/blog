@@ -14,8 +14,10 @@ function getFileList(fileObject) {
       return;
     }
 
-    fileObject[key].path = key;
-    fileObject[key].children = getFileList(fileObject[key].children);
+    fileObject[key].path = key.replace(/.html$/, '');
+    if (fileObject[key].children) {
+      fileObject[key].children = getFileList(fileObject[key].children);
+    }
 
     files.push(fileObject[key]);
   }
@@ -24,7 +26,7 @@ function getFileList(fileObject) {
 
 function registerRoutes(files, basePath) {
   files.forEach(function(file) {
-    var path = basePath + '/' + file.path.replace(/.html$/g, '');
+    var path = basePath + '/' + file.path;
     if (file.children) {
       registerRoutes(file.children, path);
     }
