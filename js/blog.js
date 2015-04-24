@@ -26,11 +26,12 @@ function getFileList(fileObject) {
 
 function registerRoutes(files, basePath) {
   files.forEach(function(file) {
-    var path = basePath + '/' + (file.path || 'index.html');
+    var path = basePath + '/' + (file.path || 'index');
     if (file.children) {
       registerRoutes(file.children, path);
     }
-    routie(path.replace('index.html', ''), function() {
+
+    routie(path.replace('index', ''), function() {
       var html = require('content/' + path.substr(1));
       $('#content').html(html({
         now: moment(),
