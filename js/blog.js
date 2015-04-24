@@ -37,6 +37,8 @@ function registerRoutes(files, basePath) {
         file: file,
         files: Files,
       }));
+      $('a').removeClass('active');
+      $('a[href="#' + path.replace('index.html', '') + '"]').addClass('active');
     });
   });
 }
