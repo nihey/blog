@@ -26,11 +26,11 @@ function getFileList(fileObject) {
 
 function registerRoutes(files, basePath) {
   files.forEach(function(file) {
-    var path = basePath + '/' + file.path;
+    var path = basePath + '/' + (file.path || 'index.html');
     if (file.children) {
       registerRoutes(file.children, path);
     }
-    routie(path, function() {
+    routie(path.replace('index.html', ''), function() {
       var html = require('content/' + path.substr(1));
       $('#content').html(html({
         now: moment(),
@@ -51,4 +51,7 @@ $(document).ready(function() {
 
   // Register routes according to our file index
   registerRoutes(getFileList(Files), '');
+  routie('*', function() {
+    location.hash = "#/";
+  });
 });

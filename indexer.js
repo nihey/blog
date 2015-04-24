@@ -15,6 +15,7 @@ function getFiles(dir) {
 
     var fullPath = path.join(dir, file);
     var filedata = fs.statSync(fullPath);
+    file = file === 'index.html' ? '' : file;
 
     directory[file] = {
       modified: filedata.mtime,
