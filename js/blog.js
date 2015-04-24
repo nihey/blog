@@ -31,7 +31,7 @@ function registerRoutes(files, basePath) {
       registerRoutes(file.children, path);
     }
 
-    routie(path.replace('index', ''), function() {
+    routie('!' + path.replace('index', ''), function() {
       var html = require('content/' + path.substr(1));
       $('#content').html(html({
         now: moment(),
@@ -39,7 +39,7 @@ function registerRoutes(files, basePath) {
         files: Files,
       }));
       $('a').removeClass('active');
-      $('a[href="#' + path.replace('index.html', '') + '"]').addClass('active');
+      $('a[href="#!' + path.replace('index', '') + '"]').addClass('active');
     });
   });
 }
@@ -55,6 +55,6 @@ $(document).ready(function() {
   // Register routes according to our file index
   registerRoutes(getFileList(Files), '');
   routie('*', function() {
-    location.hash = "#/";
+    location.hash = "#!/";
   });
 });
