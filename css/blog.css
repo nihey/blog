@@ -70,3 +70,10 @@ a:focus {
 .text-lg {
   font-size: 1.2em;
 }
+
+.image {
+  display: block;
+  margin: auto;
+  max-width: 38rem;
+  border: 0.15em solid #eaca8a;
+}
