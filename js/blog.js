@@ -5,6 +5,10 @@ var helpers = {
     }
     return date.format('LL');
   },
+  'disqus-comments': function() {
+    var html = require('content/disqus');
+    return new Handlebars.SafeString(html());
+  },
 }
 
 function getFileList(fileObject) {
@@ -40,6 +44,15 @@ function registerRoutes(files, basePath) {
       }));
       $('a').removeClass('active');
       $('a[href="#!' + path.replace('index', '') + '"]').addClass('active');
+
+      // disqus reload
+      window.DISQUS && $('#disqus_thread').length && DISQUS.reset({
+        reload: true,
+        config: function () {
+          this.page.identifier = location.hash;
+          this.page.url = location.href;
+        }
+      });
     });
   });
 }
