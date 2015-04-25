@@ -1,0 +1,6 @@
+<h2>Archive</h2>
+<ul class="post-list">
+  {{#each files.posts.children}}
+    <li>{{format-date this.modified}} - <a href="#!/posts/{{ this.path }}">{{ this.title }}</a></li>
+  {{/each}}
+</ul>
