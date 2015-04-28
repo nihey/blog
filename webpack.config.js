@@ -22,9 +22,6 @@ module.exports = {
   plugins: [
     new webpack.ProvidePlugin({
       Files: 'exports?this.files!js/index',
-      $: 'bower_components/jquery/dist/jquery.min',
-      Handlebars: 'bower_components/handlebars/handlebars.min',
-      moment: 'bower_components/moment/min/moment.min',
       routie: 'exports?window.routie!bower_components/routie/dist/routie.min',
     }),
     new webpack.optimize.UglifyJsPlugin({minimize: true}),
