@@ -45,6 +45,11 @@ function registerRoutes(files, basePath) {
       $('a').removeClass('active');
       $('a[href="#!' + path.replace('index', '') + '"]').addClass('active');
 
+      // HightlightJS initialization
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+
       // disqus reload
       window.DISQUS && $('#disqus_thread').length && DISQUS.reset({
         reload: true,
