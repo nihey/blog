@@ -29,6 +29,10 @@ a:focus {
   outline: 0;
 }
 
+code {
+  border: 0.15em solid #eaca8a;
+}
+
 .header {
   padding-top: 20px;
 }
@@ -76,4 +80,13 @@ a:focus {
   margin: auto;
   max-width: 38rem;
   border: 0.15em solid #eaca8a;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 0.8em;
+}
+
+.borderless {
+  border: none !important;
 }

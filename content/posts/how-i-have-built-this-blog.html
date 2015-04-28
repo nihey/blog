@@ -1,0 +1,207 @@
+<h2 id="title">How I've built this static blog</h2>
+<div class="date-title">{{format-date file.modified}}</div>
+<p>
+  I have been contemplating the idea of start blogging for some weeks, but one
+  of the things that worried me, is that I always found it really hard to
+  customize the platform I would use to blog. It takes time to fully understand
+  a platform like
+  <a href="https://wordpress.org/">Wordpress</a> or
+  <a href="https://ghost.org/">Ghost</a> - and even thought Ghost was made to be
+  easier for blogging, I would not be able to use a free static hosting
+  platform.
+</p>
+
+<p>
+  A better alternative would be the increasingly growing static platforms, like
+  <a href="http://jekyllrb.com/">Jekyll</a> or
+  <a href="http://octopress.org/">Octopress</a>. They make it fairly easily to
+  start blogging, along with the benefit of being able to host them on
+  <a href="https://pages.github.com/">GitHub pages</a> or another free static
+  hosting platform, along with writting your content in Markdown - very easy to
+  learn. It looks like a much better alternative, but I was concened about how
+  easily would I be able to hack into such platforms - like inserting custom
+  javascript code.
+</p>
+
+<p>
+  My tools of the trade on this job are (so far):
+  <ul>
+    <li><a href="http://webpack.github.io/">Webpack</a> - Bundles everything and provides <code class="borderless">require</code></li>
+    <li><a href="https://github.com/cheeriojs/cheerio">Cheerio</a> - jQuery-like parsing for NodeJS</li>
+    <li><a href="http://projects.jga.me/routie/">Routie</a> - Simple hash routing utility</li>
+    <li><a href="http://handlebarsjs.com/">Handlebars</a> - provides templating to our HTML</li>
+    <li><a href="http://momentjs.com/">Moment</a> - Better date and time parsing</li>
+  </ul>
+</p>
+
+<p>
+  So I've built my own platform, inspired mostly by the simplicity of the
+  static platforms. My first question was: how would I be able to
+  browse through each file of this blog? I would need a index, a directory-like
+  data structure to make my application understand its data. So I've started
+  building the indexer.js file.
+</p>
+
+<pre><code class="javascript">
+var fs = require('fs');
+var path = require('path');
+var cheerio = require('cheerio');
+
+/* Explores a directory and return all its tree
+ *
+ * @param dir Root directory to be explored
+ */
+function getFiles(dir) {
+  var directory = {};
+  fs.readdirSync(dir).forEach(function(file) {
+    // Do not track hidden files and directories
+    if (file[0] === '.') {
+      return;
+    }
+
+    var fullPath = path.join(dir, file);
+    var filedata = fs.statSync(fullPath);
+    // index.html or index.js files are stated as root
+    file = file === 'index.html' ? '' : file;
+    file = file === 'index.js' ? '' : file;
+
+    directory[file] = {
+      modified: filedata.mtime,
+      created: filedata.birthtime
+    };
+
+    // Append child files for directories
+    if (filedata.isDirectory()) {
+      directory[file].children = getFiles(fullPath);
+      return;
+    }
+
+    // Add title metadata
+    directory[file].title = cheerio.load(fs.readFileSync(fullPath))('#title').text();
+  });
+  return directory;
+}
+
+// Get all files on the content folder
+var files = JSON.stringify(getFiles('content'));
+
+// Send a minified initializer to the stdout
+console.log('(function(global){global.files=' + files + '})(this)');
+</code></pre>
+
+<p class="subtitle">
+  <a href="https://github.com/nihey/blog/blob/6a085c93b3c23018bdd5bdb8ea45ad5957ff053c/indexer.js">indexer.js</a>
+  at {{format-date file.modified}}
+</p>
+
+<p>
+  So the index is returned on a Object structure, I could access the
+  <code class="borderless">posts/lipsum.html</code> file by accessing the Object
+  <code class="borderless">files.posts.children['lipsum.html']</code>. I just
+  need to run <code class="borderless">node indexer.js > js/index.js</code>
+  whenever I create a new file.
+</p>
+
+<p>
+  After being able to access all the content of the blog, we should create a
+  some kind of structure to load the content inside of it. This is what the
+  <a href="https://github.com/nihey/blog/blob/6a085c93b3c23018bdd5bdb8ea45ad5957ff053c/js/blog.js">blog.js</a>
+  does. Specifically this part of the code:
+</p>
+
+<pre><code class="javascript">
+// Recursively register routes related to each file on the index
+function registerRoutes(files, basePath) {
+  files.forEach(function(file) {
+    // When path === '' we should take the index file as index
+    var path = basePath + '/' + (file.path || 'index');
+
+    // Recursively register the routes for each child
+    if (file.children) {
+      registerRoutes(file.children, path);
+    }
+
+    // Bind the route to its corresponding file
+    routie(path.replace('index', ''), function() {
+      // Retrieve the html (or js) of the corresponding route
+      var html = require('content/' + path.substr(1));
+
+      // Execute the Handlebars template or javascript function and insert it's
+      // return content into the DOM.
+      $('#content').html(html({
+        now: moment(),
+        file: file,
+        files: Files,
+      }));
+
+      // Just some additional styling for the currently activated routes
+      $('a').removeClass('active');
+      $('a[href="#' + path.replace('index.html', '') + '"]').addClass('active');
+    });
+  });
+}
+</code></pre>
+
+<p class="subtitle">
+  <a href="https://github.com/nihey/blog/blob/6a085c93b3c23018bdd5bdb8ea45ad5957ff053c/js/blog.js">blog.js</a>
+  at {{format-date file.modified}}
+</p>
+
+<p>
+  After that, you'll notice that each route will be bound to the corresponding
+  html or js file on our content directory. As an example, this post's raw
+  content can be accessed
+  <a href="content/posts/how-i-have-built-this-blog.html">here</a>.
+</p>
+
+<p>
+  With that, I can now start building any page by just putting content into a
+  <a href="https://github.com/nihey/blog/tree/gh-pages/content">directory</a>.
+  A nice example is the <a href="content/index.js">index.js</a> file, a javascript file that
+  defines the <a href="#!/">home</a> route, it dynamically choses one image
+  from a directory and displays it on the page, along with a quote related to it.
+</p>
+
+<p>
+  I'm really enjoying this structure so far, and I encourage anyone who knows
+  some Web development to build your own platform. It doesn't take much time,
+  and you'll total control over it.
+</p>
+
+<p>Some final thoughts onto this post:</p>
+<ul>
+  <li>
+    I've just covered the basics on this project.
+  </li>
+  <li>
+    I later discovered that '!' prepended routes are make it easier for google
+    crawlers to understand this is another page, so you may boost your SEO.
+  </li>
+  <li>
+    You'll have to bundle your code with <a href="http://webpack.github.io/">Webpack</a>
+    or another tool that provides you the <code class="borderless">require</code>
+    function (AMD may be used as well)
+  </li>
+  <li>
+    I have some concerns about how the blog.min.js generated file may grow, and
+    how webpack will deal with this later, what do you think about this?
+    (either way, its a problem I'll deal with when the time comes)
+  </li>
+  <li>
+    If you are a good observer, you'll notice I created a Object structure on
+    <a href="https://github.com/nihey/blog/blob/6a085c93b3c23018bdd5bdb8ea45ad5957ff053c/indexer.js">indexer.js</a>
+    but on
+    <a href="https://github.com/nihey/blog/blob/6a085c93b3c23018bdd5bdb8ea45ad5957ff053c/js/blog.js">blog.js</a>
+    I use the <code class="borderless">Array.prototype.forEach</code> function, that's because a
+    little tweak using the <code class="borderless">getFilesList</code> function at
+    <a href="https://github.com/nihey/blog/blob/6a085c93b3c23018bdd5bdb8ea45ad5957ff053c/js/blog.js">blog.js</a>,
+    that leaves only the root directories being accessible via Object API (the
+    rest will be converted to an array structure).
+  </li>
+  <li>
+    Found a bug? Have any suggestion? Let me know on the
+    <a href="https://github.com/nihey/blog/issues">issues</a>.
+  </li>
+</ul>
+
+{{disqus-comments}}
