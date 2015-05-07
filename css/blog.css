@@ -29,6 +29,13 @@ a:focus {
   outline: 0;
 }
 
+footer {
+  padding: 1.5em;
+  text-align: center;
+  font-size: 0.75em;
+  opacity: 0.8;
+}
+
 .header {
   padding-top: 20px;
 }
