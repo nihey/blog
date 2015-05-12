@@ -28,6 +28,31 @@ function getFileList(fileObject) {
   return files;
 }
 
+function registerRoute(path, file) {
+  var html = require('content/' + path.substr(1));
+  $('#content').html(html({
+    now: moment(),
+    file: file,
+    files: Files,
+  }));
+  $('a').removeClass('active');
+  $('a[href="#!' + path.replace('index', '') + '"]').addClass('active');
+
+  // HightlightJS initialization
+  $('pre code').each(function(i, block) {
+    hljs.highlightBlock(block);
+  });
+
+  // disqus reload
+  window.DISQUS && $('#disqus_thread').length && DISQUS.reset({
+    reload: true,
+    config: function () {
+      this.page.identifier = location.hash;
+      this.page.url = location.href;
+    }
+  });
+}
+
 function registerRoutes(files, basePath) {
   files.forEach(function(file) {
     var path = basePath + '/' + (file.path || 'index');
@@ -35,30 +60,7 @@ function registerRoutes(files, basePath) {
       registerRoutes(file.children, path);
     }
 
-    routie('!' + path.replace('index', ''), function() {
-      var html = require('content/' + path.substr(1));
-      $('#content').html(html({
-        now: moment(),
-        file: file,
-        files: Files,
-      }));
-      $('a').removeClass('active');
-      $('a[href="#!' + path.replace('index', '') + '"]').addClass('active');
-
-      // HightlightJS initialization
-      $('pre code').each(function(i, block) {
-        hljs.highlightBlock(block);
-      });
-
-      // disqus reload
-      window.DISQUS && $('#disqus_thread').length && DISQUS.reset({
-        reload: true,
-        config: function () {
-          this.page.identifier = location.hash;
-          this.page.url = location.href;
-        }
-      });
-    });
+    routie('!' + path.replace('index', ''), registerRoute.bind(this, path, file));
   });
 }
 
@@ -72,7 +74,5 @@ $(document).ready(function() {
 
   // Register routes according to our file index
   registerRoutes(getFileList(Files), '');
-  routie('*', function() {
-    location.hash = "#!/";
-  });
+  routie('*', registerRoute.bind(this, '/index', Files['index.html']));
 });
