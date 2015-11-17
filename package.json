@@ -1,0 +1,23 @@
+{
+  "name": "blog",
+  "version": "0.0.0",
+  "description": "personal blog",
+  "main": "build.js",
+  "dependencies": {
+    "chokidar": "^1.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nihey/blog.git"
+  },
+  "author": "Nihey Takizawa",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/nihey/blog/issues"
+  },
+  "homepage": "https://github.com/nihey/blog#readme"
+}
