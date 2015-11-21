@@ -4,7 +4,12 @@
   "description": "personal blog",
   "main": "build.js",
   "dependencies": {
-    "chokidar": "^1.2.0"
+    "chokidar": "^1.2.0",
+    "css-loader": "^0.23.0",
+    "extract-text-webpack-plugin": "^0.9.1",
+    "less-loader": "^2.2.1",
+    "style-loader": "^0.13.0",
+    "webpack": "^1.12.8"
   },
   "devDependencies": {},
   "scripts": {
