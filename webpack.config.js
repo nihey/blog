@@ -1,10 +1,12 @@
 var webpack = require('webpack'),
     ExtractTextPlugin = require('extract-text-webpack-plugin'),
+    HtmlPlugin = require('./plugins/html-plugin'),
     path = require('path');
 
 module.exports = {
   entry: {
-    'style': './styles.less',
+    'style': './styles/index.less',
+    'script': './scripts/index.js',
   },
 
   module: {
@@ -17,10 +19,14 @@ module.exports = {
         test: /\.less$/,
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader'),
       },
+      { test: /.(png|jpe?g|gif|svg.*)$/, loader: 'file-loader'},
     ],
   },
 
-  plugins: [new ExtractTextPlugin('[name].css')],
+  plugins: [
+    new ExtractTextPlugin('[name].css'),
+    new HtmlPlugin('index.html'),
+  ],
 
   output: {
     path: path.join(__dirname, 'dist'),
