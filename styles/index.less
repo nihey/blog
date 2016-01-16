@@ -4,6 +4,29 @@ html, body {
   margin: 0;
 }
 
+.nihey {
+  padding: 3px;
+  position: relative;
+  display: inline-block;
+  border: 3px solid #2c3e50;
+  border-radius: 0.5em;
+  margin-bottom: -10px;
+
+  &:after {
+    position: absolute;
+    top: 100%;
+    right: 10%;
+    content: " ";
+    height: 0;
+    width: 0;
+    border: solid;
+    pointer-events: none;
+    border-width: 8px;
+    border-color: rgba(136, 183, 213, 0);
+    border-top-color: #2c3e50;
+  }
+}
+
 .walking-animation {
   position: relative;
   display: inline-block;
@@ -53,7 +76,7 @@ html, body {
     margin-bottom: 1em;
   }
 
-  .content {
+  .post-abstract {
     text-align: justify;
   }
 }

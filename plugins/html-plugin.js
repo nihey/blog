@@ -13,6 +13,7 @@ function HtmlParserWebpackPlugin() {
 }
 
 HtmlParserWebpackPlugin.prototype.apply = function(compiler) {
+  global.htmls = {};
   this.compiler = compiler;
   // XXX I could try to find a better way to check this.
   // Note: 'compiler.options.debug' options is not ovewritten by cli options
@@ -48,6 +49,8 @@ HtmlParserWebpackPlugin.prototype.compile = function(file, compilation, callback
       collapseWhitespace: true,
     });
   }
+
+  global.htmls[file] = htmlSource;
   this.createFile(compilation, file, htmlSource);
   callback();
 };
