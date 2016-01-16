@@ -21,6 +21,7 @@ module.exports = {
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader'),
       },
       { test: /.(png|jpe?g|gif|svg.*)$/, loader: 'file-loader'},
+      { test: /.json$/, loader: 'json-loader'},
     ],
   },
 
@@ -29,6 +30,11 @@ module.exports = {
     new HtmlPlugin('index.html'),
     new ContentPlugin('content/**', 'index.html'),
   ],
+
+  resolve: {
+    root: path.join(__dirname, 'scripts'),
+    extensions: ['', '.js', '.json'],
+  },
 
   output: {
     path: path.join(__dirname, 'dist'),

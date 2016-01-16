@@ -18,3 +18,12 @@ imageLoad([require('../assets/images/me.png')], function(image) {
     me.draw(0, 0);
   }, 200);
 });
+
+var speak = function() {
+  var speeches = require('speeches');
+  var speech = speeches[Math.floor(speeches.length * Math.random())];
+  document.getElementById('speech').innerHTML = speech;
+};
+
+speak();
+document.getElementById('scenario').addEventListener('click', speak);
