@@ -21,15 +21,19 @@ ContentPlugin.prototype.apply = function(compiler) {
     var $ = cheerio.load(global.htmls[this.index]);
     $('.main-content').html(this.posts.map(function(post) {
       return [
-        '<div class="post-brief">',
+        '<div class="post brief">',
         '  <span class="title">' + post.title + '</span>',
+        '  <div class="post-date">' + post.date + '</div>',
         '  <p class="post-abstract">' + post.abstrakt + '</p>',
+        '  <a href="' + post.file + '">leia mais</a>',
         '</div>',
       ].join('');
     }).join(''));
 
     var file = path.join(compiler.outputPath, this.index);
+    var mainPath = path.join(compiler.outputPath, 'main.html');
     fs.writeFileSync(file, $.html());
+    fs.writeFileSync(mainPath, $('.main-content').html());
     this.posts = [];
 
     next();
@@ -48,8 +52,10 @@ ContentPlugin.prototype.compile = function(file, compilation, next) {
 
   this.posts.push({
     title: $('.title').html(),
+    date: $('.post-date').html(),
     abstrakt: $('.content p:first-child').html(),
     content: $('.content').html(),
+    file: file,
   });
 
   next();

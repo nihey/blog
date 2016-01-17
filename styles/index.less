@@ -1,7 +1,17 @@
 @import "./animations.less";
 
+@underground: #222034;
+@obscurity: #1e202d;
+@corp_blue: #252b45;
+@midnight_sea: #3b4082;
+@shallow_purple: #9a9bc7;
+@frosty_blue: #b9d9ff;
+@light_yellow: #f8e0ba;
+
 html, body {
   margin: 0;
+  background-color: @underground;
+  color: @frosty_blue;
 }
 
 #speech {
@@ -46,7 +56,7 @@ html, body {
 
   white-space: nowrap;
   overflow: hidden;
-  border-radius: 1.2em;
+  border-radius: 5em;
   perspective: 1px;
   cursor: pointer;
   .unselectable;
@@ -79,18 +89,44 @@ html, body {
   text-align: center;
 }
 
-.post-brief {
+.post {
   display: inline-block;
   max-width: 600px;
 
   .title {
     font-weight: bold;
-    font-size: 1.1em;
+    font-size: 1.3em;
     font-family: "Myriad Pro", Helvetica, Arial, sans-serif;
     margin-bottom: 1em;
   }
 
-  .post-abstract {
+  .post-date {
+    font-size: 0.8em;
+  }
+
+  p {
+    font-size: 1.1em;
     text-align: justify;
+
+    b {
+      color: @light_yellow;
+    }
+  }
+
+  &.brief > a {
+    display: inline-block;
+    margin-top: 0.3em;
+    padding: 0.3em;
+    color: @frosty_blue;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-decoration: none;
+    border: 0.2em solid @frosty_blue;
+    border-radius: 0.3em;
+    transition: background-color 0.3s ease-out;
+
+    &:hover {
+      background-color: @corp_blue;
+    }
   }
 }
