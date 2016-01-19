@@ -1,3 +1,6 @@
+window.d3 = require('d3');
+window.nvd3 = require('nvd3');
+
 var imageLoad = require('image-load'),
     fetch = require('exports?self.fetch!whatwg-fetch'),
     Sprite = require('exports?window.Sprite!sprite-js/dist/sprite.min');
@@ -25,6 +28,37 @@ var applyFormatters = function() {
   Array.prototype.slice.call(document.querySelectorAll('.post-date')).forEach(function(date) {
     date.innerHTML = new Date(date.innerHTML).toDateString();
   });
+
+  var execute = function(scripts) {
+    var index = -1;
+    var next = function() {
+      index += 1;
+      var script = scripts[index];
+      if (script) {
+        script(next);
+      }
+    };
+
+    next();
+  };
+
+  var scripts = Array.prototype.slice.call(document.querySelectorAll('.main-content script')).map(function(script) {
+    return function(next) {
+      if (!script.getAttribute('src')) {
+        eval(script.text);
+        return next();
+      }
+
+      fetch(script.getAttribute('src')).then(function(response) {
+        return response.text();
+      }).then(function(script) {
+        eval(script);
+        next();
+      });
+    }
+  });
+
+  execute(scripts);
 };
 
 var onHashChange = function() {
@@ -45,6 +79,8 @@ var onHashChange = function() {
     }).then(function(html) {
       // Put it on the '.main-content' <div>
       document.querySelector('.main-content').innerHTML = html;
+      document.querySelector('.post').innerHTML += '<a class="link" href="#!/">voltar</a>';
+
       applyFormatters();
     });
   }

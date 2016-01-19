@@ -1,4 +1,5 @@
 @import "./animations.less";
+@import "../node_modules/nvd3/build/nv.d3.min.css";
 
 @underground: #222034;
 @obscurity: #1e202d;
@@ -49,10 +50,12 @@ html, body {
 }
 
 .walking-animation {
+  @animation_width: 96px * 2px;
+
   position: relative;
   display: inline-block;
   height: 80px;
-  width: 96 * 4px;
+  width: @animation_width;
 
   white-space: nowrap;
   overflow: hidden;
@@ -73,7 +76,7 @@ html, body {
   #me {
     position: absolute;
     top: 0;
-    left: (96 * 4 / 2) - (32 / 2px);
+    left: (@animation_width / 2) - (32 / 2px);
 
     width: 32px;
     height: 32px;
@@ -87,6 +90,8 @@ html, body {
 
 .main-content {
   text-align: center;
+  padding-left: 1em;
+  padding-right: 1em;
 }
 
 .post {
@@ -113,9 +118,10 @@ html, body {
     }
   }
 
-  &.brief > a {
+  &.brief > a, .link {
     display: inline-block;
     margin-top: 0.3em;
+    margin-bottom: 1em;
     padding: 0.3em;
     color: @frosty_blue;
     font-size: 1.2em;
@@ -129,4 +135,16 @@ html, body {
       background-color: @corp_blue;
     }
   }
+}
+
+.chart {
+  padding: 2em;
+  height: 500px;
+  border-radius: 0.3em;
+  background-color: white;
+}
+
+.chart-subtitle {
+  font-size: 0.8em;
+  padding: 0.3em;
 }
