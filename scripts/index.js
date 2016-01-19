@@ -29,6 +29,14 @@ var applyFormatters = function() {
     date.innerHTML = new Date(date.innerHTML).toDateString();
   });
 
+  // Add loading animation to page changing buttons
+  Array.prototype.slice.call(document.querySelectorAll('[href^="#!/"]')).forEach(function(button) {
+    button.addEventListener('click', function() {
+      button.innerHTML = '<i class="fa fa-refresh fa-spin"></i>';
+    });
+  });
+
+  // Make sure all post scripts are executed
   var execute = function(scripts) {
     var index = -1;
     var next = function() {
@@ -73,6 +81,11 @@ var onHashChange = function() {
   document.getElementById('scenario').addEventListener('click', speak);
 
   if (location.hash.substr(3) !== '') {
+    var loading = document.querySelector('.fa.fa-refresh.fa-spin');
+    if (!loading) {
+      document.querySelector('.main-content').innerHTML = '<i class="fa fa-refresh fa-spin"></i>';
+    }
+
     // Non-Index routes, fetch the content
     return fetch(location.hash.substr(3)).then(function(response) {
       return response.text();

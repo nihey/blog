@@ -47,6 +47,16 @@ ContentPlugin.prototype.compile = function(file, compilation, next) {
   }
 
   var content = fs.readFileSync(file);
+  // Inject a script that redirect the user to the right page if he landed
+  // on the raw post one
+  content += [
+    '<script>',
+      'if (location.hash !== "#!/' + file +'") {',
+      '  location.replace("http://nihey.github.io/blog/#!/' + file + '")',
+      '}',
+    '</script>',
+  ].join('');
+
   var $ = cheerio.load(content);
   this.write(compilation, file, content);
 

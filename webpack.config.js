@@ -20,7 +20,7 @@ module.exports = {
         test: /\.less$/,
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader'),
       },
-      { test: /.(png|jpe?g|gif|svg.*)$/, loader: 'file-loader'},
+      { test: /.(png|jpe?g|gif|svg|eot|woff2?|ttf).*$/, loader: 'file-loader'},
       { test: /.json$/, loader: 'json-loader'},
     ],
   },
