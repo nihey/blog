@@ -1,6 +1,0 @@
-# vim temporary files
-*.swp
-
-# dependencies
-bower_components/
-node_modules/

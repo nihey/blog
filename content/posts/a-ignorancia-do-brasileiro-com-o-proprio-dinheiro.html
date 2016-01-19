@@ -1,0 +1,141 @@
+<div class="post">
+  <span class="title">A ignorância do brasileiro com o próprio dinheiro</span>
+  <div class="post-date">2016-01-16</div>
+  <div class="content">
+    <p>
+      Um dos sonhos que muitas pessoas compartilham é o de ter dinheiro o
+      suficiente para largar o emprego, trabalhar apenas por prazer, sair do
+      sistema comum de trabalho que a maioria das pessoas se submete. O grande
+      problema é que são poucas as pessoas que procuram os meios que irão
+      faze-las atingir estes objetivos. Este problema é bastante complexo,
+      envolve desde o consumismo excessivo, o valor abusivo que os brasileiros
+      aceitam pagar pelos seus bens de consumo, além do assunto que irei
+      abordar: a <b>mà administração do dinheiro</b>.
+    </p>
+    <p>
+      Em um país com oportunidades de investimentos de baixo risco e juros
+      altos o brasileiro se contenta em deixar sua renda na poupança e
+      previdência privada, sem falar que também aceitam aberrações como FGTS e
+      INSS. À princípio, para quem tem pouco dinheiro, parece que não vai fazer
+      diferença se você faz uma aplicação que rende 0.7% a.m. (ao mês) ou 0.9%
+      ao mês, "a margem é tão pequena que nem vale a pena estudar isso", mas
+      são atitudes como esta que colocam a corda no pescoço do brasileiro assim
+      que ele começa a ganhar seus primeiros trocados. No começo a corda não
+      vai incomodar muito, mas depois de 40 anos o cara vai estar enforcado - e
+      será tarde demais para se salvar. Como demonstração, deixo um gráfico
+      simulando uma pessoa que aplica 300 reais por mês com juros de 0.7% a.m.
+      e outra, com os mesmos 300 reais mensais, com juros de 0.9% a.m. durante
+      40 anos.
+    </p>
+    <div>
+      <div id="lifetime" class="chart"></div>
+      <div class="chart-subtitle">Uma diferença final de mais de 1 milhão de reais</div>
+      <script>
+        window.plot = function(where, datum, label) {
+          nv.addGraph(function() {
+            var chart = nv.models.lineChart().options({
+              transitionDuration: 350,
+              useInteractiveGuideline: true,
+              marginLeft: 100,
+            });
+
+            chart.xAxis
+                 .axisLabel(label || 'Tempo (anos)');
+
+            chart.yAxis
+                .axisLabel('Dinheiro (R$)')
+                .tickFormat(function(number) {
+                  if (number >= 1000000) {
+                    number = number / 1000000;
+                    return number.toFixed(2) + ' mi';
+                  }
+                  if (number >= 1000) {
+                    number = number / 1000;
+                    return number.toFixed(2) + ' k';
+                  }
+                  return Math.round(number);
+                });
+
+            d3.select(where).append('svg')
+                .datum(datum)
+                .call(chart);
+
+            nv.utils.windowResize(function () {chart.update()});
+            return chart;
+          });
+        };
+
+        var lower = {
+          values: [],
+          key: 'Pessoa 1 (0.7% a.m.)',
+          _money: 0,
+        };
+
+        var higher = {
+          values: [],
+          key: 'Pessoa 2 (0.9% a.m.)',
+          _money: 0,
+        };
+
+        for (var i = 0; i < 40; i++) {
+          for (var j = 0; j < 12; j++) {
+            lower._money += (lower._money * 0.007);
+            higher._money += (higher._money * 0.009);
+
+            lower._money += 300;
+            higher._money += 300;
+          }
+          lower.values.push({x: i + 1, y: lower._money});
+          higher.values.push({x: i + 1, y: higher._money});
+        }
+
+        plot('#lifetime', [lower, higher]);
+      </script>
+    </div>
+    <p>
+      No exemplo, é claro como uma decisão errada há 30 anos atrás pode custar
+      mais de 1 milhão de reais, uma diferença inicial de 0.2% a.m. há 30 anos
+      levou um indivíduo a ter mais que o dobro do dinheiro do outro. Todo
+      este efeito se deve aos juros compostos - algo que aprendemos no ensino
+      fundamental, mas que aparentemente muitos acabam esquecendo com o tempo.
+      O grande problema dos juros compostos é que seu efeito geralmente só se
+      torna visível em grandes períodos de tempo quando se tem taxas de juros
+      baixas, as pessoas que não conseguem ver o 'Big Picture' acabam deixando
+      de ganhar muito. Veja um zoom da última simulação no primeiro ano e no
+      último ano, agrupado por mês.
+    </p>
+    <div>
+      <div id="first-year" class="chart"></div>
+      <div class="chart-subtitle">Uma diferença final de ~40 reais</div>
+      <script>
+        var lower = {
+          values: [],
+          key: 'Pessoa 1 (0.7% a.m.)',
+          _money: 0,
+        };
+
+        var higher = {
+          values: [],
+          key: 'Pessoa 2 (0.9% a.m.)',
+          _money: 0,
+        };
+
+        for (var i = 0; i < 12; i++) {
+          lower._money += (lower._money * 0.007);
+          higher._money += (higher._money * 0.009);
+
+          lower._money += 300;
+          higher._money += 300;
+
+          lower.values.push({x: i + 1, y: lower._money});
+          higher.values.push({x: i + 1, y: higher._money});
+        }
+
+        plot('#first-year', [lower, higher], 'Tempo (meses)');
+      </script>
+    </div>
+    <p>
+    </p>
+  </div>
+</div>
+<script>if (location.hash !== "#!/content/posts/a-ignorancia-do-brasileiro-com-o-proprio-dinheiro.html") {  location.replace("http://nihey.github.io/blog/#!/content/posts/a-ignorancia-do-brasileiro-com-o-proprio-dinheiro.html")}</script>
