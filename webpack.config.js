@@ -29,6 +29,9 @@ module.exports = {
     new ExtractTextPlugin('[name].css'),
     new HtmlPlugin('index.html'),
     new ContentPlugin('content/**', 'index.html'),
+    new webpack.DefinePlugin({
+      Environment: JSON.stringify(require('config')),
+    }),
   ],
 
   resolve: {

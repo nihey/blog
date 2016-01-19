@@ -67,6 +67,22 @@ var applyFormatters = function() {
   });
 
   execute(scripts);
+
+  if (document.querySelector('#disqus_thread') && window.DISQUS) {
+    window.DISQUS.reset({
+      reload: true,
+      config: function() {
+        this.page.identifier = location.hash;
+        this.page.url = location.href;
+      }
+    });
+  }
+
+  if (!DEBUG) {
+    // Send Google Analytics Statistics
+    ga('create', 'UA-72558392-1', 'auto');
+    ga('send', 'pageview');
+  }
 };
 
 var onHashChange = function() {
@@ -92,7 +108,8 @@ var onHashChange = function() {
     }).then(function(html) {
       // Put it on the '.main-content' <div>
       document.querySelector('.main-content').innerHTML = html;
-      document.querySelector('.post').innerHTML += '<a class="link" href="#!/">voltar</a>';
+      document.querySelector('.post').innerHTML += '<a class="link" href="#!/">voltar</a>' +
+                                                   '<div id="disqus_thread"></div>';
 
       applyFormatters();
     });
