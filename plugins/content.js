@@ -25,7 +25,7 @@ ContentPlugin.prototype.apply = function(compiler) {
         '  <span class="title">' + post.title + '</span>',
         '  <div class="post-date">' + post.date + '</div>',
         '  <p class="post-abstract">' + post.abstrakt + '</p>',
-        '  <a href="' + post.file + '">leia mais</a>',
+        '  <a href="' + post.file + '">read</a>',
         '</div>',
       ].join('');
     }).join(''));

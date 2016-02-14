@@ -1,6 +1,7 @@
 @import "./animations.less";
 @import "../node_modules/nvd3/build/nv.d3.min.css";
 @import "../node_modules/font-awesome/css/font-awesome.min.css";
+@import "../node_modules/highlight.js/styles/zenburn.css";
 
 @underground: #222034;
 @obscurity: #1e202d;
@@ -14,6 +15,24 @@ html, body {
   margin: 0;
   background-color: @underground;
   color: @frosty_blue;
+}
+
+p code {
+  padding: 0.1em 0.5em;
+  color: @underground;
+  background-color: @frosty_blue;
+  border-radius: 0.3em;
+}
+
+pre code {
+  text-align: left;
+  border-radius: 0.5em;
+}
+
+.content {
+  h1, h2, h3, h4 {
+    font-family: "Myriad Pro", Helvetica, Arial, sans-serif;
+  }
 }
 
 #speech {

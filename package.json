@@ -12,6 +12,7 @@
     "extract-text-webpack-plugin": "^0.9.1",
     "file-loader": "^0.8.5",
     "glob": "^6.0.1",
+    "highlight.js": "^9.1.0",
     "image-load": "0.0.0",
     "less-loader": "^2.2.1",
     "nvd3": "^1.8.1",

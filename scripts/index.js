@@ -1,3 +1,5 @@
+var hljs = require('highlight.js');
+
 window.d3 = require('d3');
 window.nvd3 = require('nvd3');
 
@@ -34,6 +36,12 @@ var applyFormatters = function() {
     button.addEventListener('click', function() {
       button.innerHTML = '<i class="fa fa-refresh fa-spin"></i>';
     });
+  });
+
+  // Format code
+  Array.prototype.slice.call(document.querySelectorAll('pre code')).forEach(function(pre) {
+    console.log('XXX', pre);
+    hljs.highlightBlock(pre);
   });
 
   // Make sure all post scripts are executed
@@ -108,8 +116,11 @@ var onHashChange = function() {
     }).then(function(html) {
       // Put it on the '.main-content' <div>
       document.querySelector('.main-content').innerHTML = html;
-      document.querySelector('.post').innerHTML += '<a class="link" href="#!/">voltar</a>' +
-                                                   '<div id="disqus_thread"></div>';
+
+      // Add generic content like back button and comments section
+      var back = '<div><a class="link" href="#!/">back</a></div>';
+      var post = document.querySelector('.post');
+      post.innerHTML = back + post.innerHTML + back + '<div id="disqus_thread"></div>';
 
       applyFormatters();
     });
