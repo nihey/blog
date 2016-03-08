@@ -40,8 +40,12 @@ var applyFormatters = function() {
 
   // Format code
   Array.prototype.slice.call(document.querySelectorAll('pre code')).forEach(function(pre) {
-    console.log('XXX', pre);
     hljs.highlightBlock(pre);
+  });
+
+  // Make links open in new tabs
+  Array.prototype.slice.call(document.querySelectorAll('.post .content a')).forEach(function(link, index) {
+    link.setAttribute('target', '_blank');
   });
 
   // Make sure all post scripts are executed
@@ -120,7 +124,7 @@ var onHashChange = function() {
       // Add generic content like back button and comments section
       var back = '<div><a class="link" href="#!/">back</a></div>';
       var post = document.querySelector('.post');
-      post.innerHTML = back + post.innerHTML + back + '<div id="disqus_thread"></div>';
+      post.innerHTML = post.innerHTML + back + '<div id="disqus_thread"></div>';
 
       applyFormatters();
     });

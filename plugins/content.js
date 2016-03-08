@@ -19,13 +19,17 @@ ContentPlugin.prototype.apply = function(compiler) {
 
   compiler.plugin('after-emit', function(compilation, next) {
     var $ = cheerio.load(global.htmls[this.index]);
+    this.posts = this.posts.sort((a, b) => b.date.localeCompare(a.date));
+
     $('.main-content').html(this.posts.map(function(post) {
       return [
-        '<div class="post brief">',
-        '  <span class="title">' + post.title + '</span>',
-        '  <div class="post-date">' + post.date + '</div>',
-        '  <p class="post-abstract">' + post.abstrakt + '</p>',
-        '  <a href="' + post.file + '">read</a>',
+        '<div>',
+        ' <div class="post brief">',
+        '   <span class="title">' + post.title + '</span>',
+        '   <div class="post-date">' + post.date + '</div>',
+        '   <p class="post-abstract">' + post.abstrakt + '</p>',
+        '   <a href="' + post.file + '">read</a>',
+        ' </div>',
         '</div>',
       ].join('');
     }).join(''));
