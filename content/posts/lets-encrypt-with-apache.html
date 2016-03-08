@@ -70,7 +70,7 @@ $ crontab -e
     <pre><code>
 # Everyday at 23:30 the script is executed, but it will only renew the certificate
 # once it gets close to its expiry
-30 23 * * * /usr/local/bin/letsencrypt/letsencrypt renew --apache >> /var/log/le-renew.log
+30 23 * * * /usr/local/bin/letsencrypt renew --apache >> /var/log/le-renew.log
     </code></pre>
     <p>
       This way you can get your SSL certificates for free, so no excuses to let
