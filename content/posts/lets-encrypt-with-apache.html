@@ -1,0 +1,81 @@
+<div class="post">
+  <span class="title">Let's Encrypt: Apache</span>
+  <div class="post-date">2016-03-08</div>
+  <div class="content">
+    <p>
+      <code>https</code> should be a must have for every page on the web, it
+      ensures private communication between the client and the server. This
+      means you'll most likely not have problems with session hijacking and
+      sniffing. <a href="https://hackedbellini.org/">@hackedbellini</a> told me
+      SSL certificates can be very easily obtained with Let's Encrypt's client,
+      so let's check it out.
+    </p>
+    <h2>Let's Encrypt</h2>
+    <p>
+      <a href="https://letsencrypt.org">Let's Encrypt</a> is a initiative from
+      a lot of companies, they want to allow anyone with a domain able to
+      get a certificate, making the web more secure. This way, you should be
+      able to generate certificates for all of your domains, without having to
+      spend a penny.
+    </p>
+    <h2>Installing</h2>
+    <p>
+      You can either install their client via <code>apt-get</code>. On debian,
+      they provide packages for
+      <a href="https://packages.debian.org/jessie-backports/letsencrypt">jessie-backports</a>,
+      <a href="https://packages.debian.org/stretch/letsencrypt">testing</a> and
+      <a href="https://packages.debian.org/sid/letsencrypt">unstable</a>,
+    </p>
+    <p>or</p>
+    <p>
+      You can clone their <a href="https://github.com/letsencrypt/letsencrypt">repo on github</a>
+      and live on the edge. On this alternative you will have to execute Let's
+      Encrypt client using the <code>./letsencrypt-auto</code> executable.
+    </p>
+    <h2>Apache</h2>
+    <p>
+      Getting your first certificate using apache is very simple. Just run the
+      Let's Encrypt client like this
+    </p>
+    <pre><code>
+$ letsencrypt certonly --apache
+    </code></pre>
+    <p>
+      You should be prompted with a simple wizard to get you through the
+      certificate registration & authentication process.
+    </p>
+    <img src="">
+    <p>
+      After this the wizard, you should check the if everything went OK. Let's
+      Encrypt should have modified your Apache settings to enable SSL on your
+      selected domains.
+    </p>
+    <p>
+      Let's encrypts' certificates last only 90 days, so after doing this, you
+      should setup a certificate renewal task, to be executed every period of
+      time and renew your certificate.
+    </p>
+    <pre><code>
+$ letsencrypt renew --apache
+    </code></pre>
+    <p>
+      To do such thing from time to time, you should just setup a cronjob with:
+    </p>
+    <pre><code>
+$ crontab -e
+    </code></pre>
+    <p>
+      Then setup the script to be executed every once in a while:
+    </p>
+    <pre><code>
+# Everyday at 23:30 the script is executed, but it will only renew the certificate
+# once it gets close to its expiry
+30 23 * * * /usr/local/bin/letsencrypt/letsencrypt renew --apache >> /var/log/le-renew.log
+    </code></pre>
+    <p>
+      This way you can get your SSL certificates for free, so no excuses to let
+      your personal portifolio or website insecure.
+    </p>
+  </div>
+</div>
+<script>if (location.hash !== "#!/content/posts/lets-encrypt-with-apache.html") {  location.replace("http://nihey.github.io/blog/#!/content/posts/lets-encrypt-with-apache.html")}</script>
